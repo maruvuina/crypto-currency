@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  crypto-currency-db:
+    image: postgres:13-alpine3.18
+    container_name: crypto-currency-database
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=crypto_currency_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/crypto_currency_db/data
+
+  flyway:
+    image: flyway/flyway:7.14.0-alpine
+    container_name: flyway-service
+    environment:
+      - FLYWAY_URL=jdbc:postgresql://crypto-currency-db:5432/crypto_currency_db
+      - FLYWAY_USER=postgres
+      - FLYWAY_PASSWORD=root
+    command: [ "migrate" ]
+    volumes:
+      - ./src/main/resources/db/migration:/flyway/sql
+    depends_on:
+      - crypto-currency-db
+
+  crypto_currency_app:
+    image: ctg405/crypto-currency-app:1.0.0
+    container_name: crypto-currency-service
+    environment:
+      - DB_URL=jdbc:postgresql://crypto-currency-db:5432/crypto_currency_db
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=root
+    ports:
+      - "8080:8080"
+    depends_on:
+      - crypto-currency-db
+      - flyway
+
+volumes:
+  pg-data:
