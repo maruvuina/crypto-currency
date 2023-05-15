@@ -1,0 +1,22 @@
+cryptocurrency:
+  web-client:
+    baseUrl: https://api.coinlore.net/api/ticker/
+  schedule:
+    fixedDelay: 60000
+    enabled: true
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+  flyway:
+    baselineOnMigrate: true
+    enabled: true
+    url: ${DB_URL}
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    locations: classpath:db/migration
