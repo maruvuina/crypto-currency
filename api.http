@@ -1,0 +1,17 @@
+###
+GET https://api.coinlore.net/api/ticker/?id=90
+
+###
+GET http://localhost:8080/api/v1/currencies/BTC
+
+###
+GET http://localhost:8080/api/v1/currencies
+
+###
+POST http://localhost:8080/api/v1/currencies/users
+Content-Type: application/json
+
+{
+  "username": "harryPotter",
+  "symbol": "BTC"
+}
